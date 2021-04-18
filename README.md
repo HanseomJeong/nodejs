@@ -1,2 +1,15 @@
 # nodejs
-test
+
+***
+
+# Build
+
+***
+
+# Run
+
+```
+node server.js
+```
+
+***
