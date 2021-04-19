@@ -26,37 +26,21 @@
 
     <%- include('nav.html') %>
 
-      <h4 class="ml-2 my-3">Todo List</h4>
+      <div class="container mt-4">
+        <h4 class="text-center mb-3"> Detail Page</h4>
 
-      <ul class="list-group">
-        <% for (var i = 0; i < posts.length; i++) { %>
-          <li class="list-group-item">
-            <p class="card-title">num : <%= posts[i]._id %></p>
-            <a class="nav-link active" aria-current="page" href="/detail/<%= posts[i]._id %>">Show</a>
-            <h4 class="card-title">Title : <%= posts[i].title %></h4>
-            <p class="card-text"> Date : <%= posts[i].date %></p>
-            <button type="button" class="btn btn-danger delete" data-id="<%= posts[i]._id %>">Delete</button>
-            <!-- <button type="button" class="btn btn-link" data-id="<%= posts[i]._id %>">Delete</button> -->
-          </li>
-        <% } %>
-      </ul>
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title"><%= data.title %></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><%= data.date %></h6>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="/edit/<%= data._id %>" class="card-link">Edit</a>
+            </div>
+          </div>
+      </div>
+
 
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-      <script>
-        $('.delete').click(function(e){
-          $.ajax({
-            method: 'DELETE',
-            url: '/delete',
-            data : {_id: e.target.dataset.id},
-          }).done(function(res){
-            console.log('success');
-            $(e.target).parent('li').fadeOut();
-          }).fail(function(xhr, textStatus, errorThrown){
-            console.log(xhr, textStatus, erroThrown);
-          })
-        })
-
-      </script>
 
       
   </body>
