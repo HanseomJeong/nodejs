@@ -90,3 +90,51 @@ app.put('/edit', function(req, res){
         res.redirect('/list')
     })
 })
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+app.use(session({secret : 'secretcode', resave : true, saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session());
+//app.use(미들웨어)
+//미들웨어 : 요청 - 응답 중간에 실행되는 코드
+
+app.get('/login', function(req, res){
+    res.render('login.ejs')
+})
+app.post('/login', passport.authenticate('local', {
+    failureRedirect : '/fail'
+}), function(req, res){
+    res.redirect('/')
+})
+
+passport.use(new LocalStrategy({
+    usernameField: 'id',
+    passwordField: 'pw',
+    session: true,
+    passReqToCallback: false,
+  }, function (input_id, input_pw, done) {
+    //console.log(입력한아이디, 입력한비번);
+    db.collection('login').findOne({ id: input_id }, function (err, res) {
+      if (err) return done(err)
+  
+      if (!res) return done(null, false, { message: '존재하지않는 아이디요' })
+      if (input_pw == res.pw) {
+        return done(null, res)
+      } else {
+        return done(null, false, { message: '비번틀렸어요' })
+      }
+    })
+  }));
+
+  //session 생성
+passport.serializeUser(function(user, done){
+    done(null, user.id)
+});
+
+//session 확인
+passport.deserializeUser(function(id, done){
+    done(null, {})
+});
